@@ -111,6 +111,7 @@ public class ProgLevel extends Task {
 
 	@Override
 	public void execute() {
+		Main.mission = "Progressive Leveling.";
 		if (ProgLevelSetup.gotAxe()) {
 			switch (ProgLevelSetup.getTree()) {
 			case END:
