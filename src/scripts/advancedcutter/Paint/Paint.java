@@ -50,7 +50,7 @@ public class Paint {
 			drawRect(g, "Mission: " + Main.mission, 25, 35 + 210, 20, 20 + 210, 230, 20);
 
 		}
-		drawRect(g, "hide/show paint", 110, 325, 100, 300, 120, 30);
+		drawRect(g, "hide/show paint", 110, 315, 100, 300, 120, 20);
 	}
 
 	private static void drawRect(Graphics g, String text, int textX, int textY, int rectX, int rectY, int width,
