@@ -1,6 +1,8 @@
 package scripts.advancedcutter;
 
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -10,12 +12,14 @@ import org.tribot.api2007.Walking;
 import org.tribot.script.Script;
 import org.tribot.script.ScriptManifest;
 import org.tribot.script.interfaces.Ending;
+import org.tribot.script.interfaces.EventBlockingOverride;
 import org.tribot.script.interfaces.Painting;
 import org.tribot.script.interfaces.Starting;
 
 import com.allatori.annotations.DoNotRename;
 
 import scripts.advancedcutter.Paint.Paint;
+import scripts.advancedcutter.api.antiban.Antiban;
 import scripts.advancedcutter.api.dynamicsig.SigData;
 import scripts.advancedcutter.api.gui.GUI;
 import scripts.advancedcutter.api.taskframework.Task;
@@ -28,9 +32,10 @@ import scripts.advancedcutter.tasks.woodcut.WoodCut;
 
 @DoNotRename
 @ScriptManifest(authors = { "C#2bot" }, category = "C#2bot", name = "Advanced Cutter")
-public class Main extends Script implements Starting, Ending, Painting {
+public class Main extends Script implements Starting, Ending, Painting, EventBlockingOverride {
 
 	public static String status = "";
+	public static String mission = "";
 	public static GUI gui = null;
 	private TaskSet taskset = new TaskSet();
 
@@ -46,6 +51,7 @@ public class Main extends Script implements Starting, Ending, Painting {
 
 	private void addTasks() {
 		if (Vars.progressiveLevel) {
+			mission = "Progressive Leveling";
 			taskset.addTasks(new ProgLevel(), new GetAxe(), new ToggleRun());
 		} else {
 			taskset.addTasks(new WoodCut(), new GetAxe(), new ToggleRun());
@@ -80,10 +86,11 @@ public class Main extends Script implements Starting, Ending, Painting {
 			gui.close();
 		}
 		System.out.print("Thank you for using C#2Bot Cutter");
-		int[] vars = new int[] { Vars.xpGained, 0, 0, 0, 0, 0, 0, 0 };
+		int[] vars = new int[] { Vars.xpGained, 0, 0, 0, 0, 0, 0, Vars.accounts };
 		if (SigData.send(Vars.runTime, vars)) {
 			System.out.print("Dynamic signature data has been sent :)");
 		}
+		Antiban.destroy();
 	}
 
 	@Override
@@ -97,6 +104,32 @@ public class Main extends Script implements Starting, Ending, Painting {
 		Walking.setWalkingTimeout(General.random(1500, 2000));
 		General.useAntiBanCompliance(true);
 		System.out.print("Starting c#2Bot Cutter");
+	}
+
+	@Override
+	public OVERRIDE_RETURN overrideKeyEvent(KeyEvent e) {
+		return OVERRIDE_RETURN.SEND;
+		/*** returning send to allow keys to be pressed, (obv) ***/
+	}
+
+	@Override
+	public OVERRIDE_RETURN overrideMouseEvent(MouseEvent e) {
+		try {
+			if (Vars.togglePaintRect.contains(e.getPoint())) {
+				if (e.getID() == MouseEvent.MOUSE_CLICKED) {
+					e.consume();
+					if (!Vars.showPaint)
+						Vars.showPaint = true;
+					else
+						Vars.showPaint = false;
+					return OVERRIDE_RETURN.DISMISS;
+				} else if (e.getID() == MouseEvent.MOUSE_PRESSED)
+					return OVERRIDE_RETURN.DISMISS;
+			}
+			return OVERRIDE_RETURN.PROCESS;
+		} catch (Exception e2) {
+			return OVERRIDE_RETURN.DISMISS;
+		}
 	}
 
 }

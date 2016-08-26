@@ -18,7 +18,6 @@ public class GetAxe extends Task {
 
 	@Override
 	public int priority() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
@@ -29,6 +28,7 @@ public class GetAxe extends Task {
 
 	@Override
 	public void execute() {
+		Main.mission = "Getting " + ProgLevelSetup.axeName();
 		Main.status = "Attempting to get " + ProgLevelSetup.axeName();
 		if (Vars.bankArea.contains(Player.getPosition()))
 			this.handleBank();

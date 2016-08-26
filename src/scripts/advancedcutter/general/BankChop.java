@@ -17,6 +17,7 @@ import scripts.advancedcutter.enums.treetypes.TreeTypes;
 public class BankChop {
 
 	public static void execute(RSArea bankArea, RSArea treeArea) {
+		Main.mission = "Bank chopping.";
 		if (Inventory.isFull()) {
 			if (bankArea.contains(Player.getPosition())) {
 				handleBank();

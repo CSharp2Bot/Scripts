@@ -30,9 +30,10 @@ public class Methods {
 		} else {
 			if (!hovered(tree)) {
 				Main.status = "Hover over next tree";
-				Antiban.getABCUtil().rotateCamera();
-				if (hover(tree))
+				if (hover(tree)) {
 					Timing.waitCondition(Conditions.get().uptext_Contains(tree), General.random(4000, 6000));
+					Antiban.getABCUtil().rotateCamera();
+				}
 			}
 		}
 	}

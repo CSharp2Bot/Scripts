@@ -1,7 +1,8 @@
 package scripts.advancedcutter.tasks.proglevel;
 
-
 import org.tribot.api.General;
+import org.tribot.api2007.Player;
+import org.tribot.api2007.types.RSPlayer;
 
 import scripts.advancedcutter.Main;
 import scripts.advancedcutter.api.taskframework.Task;
@@ -39,8 +40,17 @@ public class ProgLevel extends Task {
 	}
 
 	private void endScript() {
+		Vars.accounts++;
 		System.out.print("We performed progressive leveling to level 60, script ending.");
 		Vars.start = false;
+	}
+
+	private int combatLevel() {
+		RSPlayer p = Player.getRSPlayer();
+		if (p != null) {
+			return p.getCombatLevel();
+		}
+		return 0;
 	}
 
 	private void handleTree() {
@@ -52,7 +62,10 @@ public class ProgLevel extends Task {
 				Chop.locations.put(DraynorTrees.NORMAL_SOUTH.getArea(), DraynorTrees.NORMAL_SOUTH.getWalkTile());
 				Chop.locations.put(DraynorTrees.NORMAL_NORTH.getArea(), DraynorTrees.NORMAL_NORTH.getWalkTile());
 				Chop.locations.put(VarrockTrees.NORMALS_WEST.getArea(), VarrockTrees.NORMALS_WEST.getWalkTile());
-				Chop.locations.put(LumbridgeTrees.NORMALS_WEST.getArea(), LumbridgeTrees.NORMALS_WEST.getWalkTile());
+				if (this.combatLevel() >= 10) {
+					Chop.locations.put(LumbridgeTrees.NORMALS_WEST.getArea(),
+							LumbridgeTrees.NORMALS_WEST.getWalkTile());
+				}
 				System.out.print("adding normal tree locations.");
 			}
 			treeName = TreeTypes.NORMAL.getName();
@@ -84,7 +97,9 @@ public class ProgLevel extends Task {
 			this.resetWillow = false;
 		} else {
 			if (Chop.locations.size() == 0) {
-				Chop.locations.put(DraynorTrees.WILLOW_SOUTH.getArea(), DraynorTrees.WILLOW_SOUTH.getWalkTile());
+				if (this.combatLevel() >= 10) {
+					Chop.locations.put(DraynorTrees.WILLOW_SOUTH.getArea(), DraynorTrees.WILLOW_SOUTH.getWalkTile());
+				}
 				Chop.locations.put(DraynorTrees.WILLOW_WEST.getArea(), DraynorTrees.WILLOW_WEST.getWalkTile());
 				System.out.print("adding willow tree locations.");
 			}

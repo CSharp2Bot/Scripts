@@ -69,7 +69,6 @@ public final class Antiban {
 		resetShouldOpenMenu();
 
 		ABCProperties properties = getProperties();
-
 		properties.setWaitingTime(getWaitingTime());
 		properties.setHovering(should_hover);
 		properties.setMenuOpen(should_open_menu);

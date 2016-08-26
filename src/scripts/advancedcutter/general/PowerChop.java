@@ -14,6 +14,7 @@ import scripts.advancedcutter.api.utilities.Vars;
 public class PowerChop {
 
 	public static void execute(RSArea treeArea) {
+		Main.mission = "Powerchopping.";
 		if (Inventory.isFull()) {
 			drop();
 		} else {

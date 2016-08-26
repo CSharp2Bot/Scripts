@@ -5,7 +5,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
@@ -192,6 +191,7 @@ public class MainController extends AbstractGUIController {
 		} catch (Exception e1) {
 			System.out.print("Save failed, please fill all the required field");
 		}
+		this.grabSettingFiles();
 	}
 
 	@DoNotRename
@@ -324,13 +324,13 @@ public class MainController extends AbstractGUIController {
 	private void grabSettingFiles() {
 		path = new File(Util.getWorkingDirectory().getAbsolutePath());
 		File[] files = path.listFiles();
+		ArrayList<String> list = new ArrayList<String>();
+		this.presetCombo.getItems().clear();
 		if (files != null) {
 			for (File file : files) {
 				if (file.getName().contains("C#2Bot_Advanced_Cutter")) {
-					List<String> list = new ArrayList<String>();
 					list.add(file.getName().replace("_C#2Bot_Advanced_Cutter.ini", ""));
 					ObservableList<String> obList = FXCollections.observableList(list);
-					this.presetCombo.getItems().clear();
 					this.presetCombo.setItems(obList);
 				}
 			}
