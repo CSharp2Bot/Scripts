@@ -32,7 +32,6 @@ public class Methods {
 				Main.status = "Hover over next tree";
 				if (hover(tree)) {
 					Timing.waitCondition(Conditions.get().uptext_Contains(tree), General.random(4000, 6000));
-					Antiban.getABCUtil().rotateCamera();
 				}
 			}
 		}

@@ -32,11 +32,20 @@ public final class Antiban {
 
 	public static long last_under_attack_time;
 
+	public static boolean should_Check_Xp;
+
+	public static boolean should_Examine_Entity;
+
+	public static boolean should_Check_Tabs;
+
 	static {
 		abc = new ABCUtil();
 		print_debug = false;
 		resources_won = 0;
 		resources_lost = 0;
+		should_Examine_Entity = abc.shouldExamineEntity();
+		should_Check_Xp = abc.shouldCheckXP();
+		should_Check_Tabs = abc.shouldCheckTabs();
 		run_at = abc.generateRunActivation();
 		eat_at = abc.generateEatAtHP();
 		should_hover = abc.shouldHover();
@@ -67,7 +76,9 @@ public final class Antiban {
 	public static int getReactionTime() {
 		resetShouldHover();
 		resetShouldOpenMenu();
-
+		should_Check_Xp = getABCUtil().shouldCheckXP();
+		should_Examine_Entity = getABCUtil().shouldExamineEntity();
+		should_Check_Tabs = getABCUtil().shouldCheckTabs();
 		ABCProperties properties = getProperties();
 		properties.setWaitingTime(getWaitingTime());
 		properties.setHovering(should_hover);
@@ -181,11 +192,12 @@ public final class Antiban {
 	 * @return True if the exp was checked, false otherwise.
 	 */
 	public static boolean checkXp() {
-		if (getABCUtil().shouldCheckXP()) {
+		if (should_Check_Xp) {
 			if (print_debug) {
 				debug("Checked xp");
 			}
 			getABCUtil().checkXP();
+			should_Check_Xp = false;
 			return true;
 		}
 		return false;
@@ -232,11 +244,12 @@ public final class Antiban {
 	 * @return True if an entity was examined, false otherwise.
 	 */
 	public static boolean examineEntity() {
-		if (getABCUtil().shouldExamineEntity()) {
+		if (should_Examine_Entity) {
 			if (print_debug) {
 				debug("Examined entity");
 			}
 			getABCUtil().examineEntity();
+			should_Examine_Entity = false;
 			return true;
 		}
 		return false;
@@ -283,11 +296,12 @@ public final class Antiban {
 	 * @return True if the combat tab was checked, false otherwise.
 	 */
 	public static boolean checkTabs() {
-		if (getABCUtil().shouldCheckTabs()) {
+		if (should_Check_Tabs) {
 			if (print_debug) {
 				debug("Tab checked");
 			}
 			getABCUtil().checkTabs();
+			should_Check_Tabs = false;
 		}
 		return false;
 	}
